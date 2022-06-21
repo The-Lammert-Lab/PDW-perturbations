@@ -2,18 +2,6 @@
 
 function [a, pert_percent, y0_init, step_time, step_inds, step_length, ST2] = gen_eigs_newfall(steps,gam,pert)
 
-% if nargin < 1
-%     steps = 18;
-% end
-% 
-% if nargin < 2
-%     gam = 0.019;  
-% end
-% 
-% if nargin < 3
-%     pert = 0.32;
-% end
-
 per = 5;        % Max number of seconds allowed per step
 
 % % IC constants - short period
@@ -50,7 +38,7 @@ y0_init = y0;
 %% y0 values for testing
 
 % FALL AT STEP 50!!
-y0 = [0.141782242771965; -0.138488275496900; 0.388413527493334; -0.015427038129602];
+% y0 = [0.141782242771965; -0.138488275496900; 0.388413527493334; -0.015427038129602];
 
 %%% testing large pert falls
 
@@ -330,6 +318,7 @@ y0 = [0.141782242771965; -0.138488275496900; 0.388413527493334; -0.0154270381296
 
 
 
+
 %% 
 
 % Initialization
@@ -337,9 +326,10 @@ y = y0.';     	% Vector to save states
 t = 0;          % Vector to save times
 tci = 0;        % Collision index vector
 h = [0 per];    % Integration period in seconds
+
 step_inds = zeros(1,steps); % Step indices
 step_length = zeros(1,steps); % Step lengths
-step_time2 = zeros(1,steps);
+step_time = zeros(1,steps); 
 
 L = 1; % Leg length
 % Position of stance foot
@@ -386,7 +376,7 @@ for i=1:steps
    step_inds(i) = length(y);
    step_length(i) = 2*L*sin(abs(y(step_inds(i))));
    I_b = find(v >= pi/2, 1);
-   step_time2(i) = t(end);
+   step_time(i) = t(end);
 
    % On collision switch stance and swing legs
    if i>1
@@ -405,6 +395,7 @@ for i=1:steps
            ysw = ym-L*cos(y(j,3)-y(j,1)+gam);
        end
    end
+
    if step_inds(1) <= 100
        break
    elseif ysw + init_sw_dist < (coeff(1)*xsw)+coeff(2) - fall_thresh || yst < (coeff(1)*xst)+coeff(2) - fall_thresh
@@ -423,8 +414,8 @@ fallIndex = zeros(length(y),1);
 step_time(1) = step_inds(1);
 step_time(2:length(diff(step_inds))+1,1) = diff(step_inds);
 
-ST2(1) = step_time2(1);
-ST2(2:length(diff(step_time2))+1,1) = diff(step_time2);
+ST2(1) = step_time(1);
+ST2(2:length(diff(step_time))+1,1) = diff(step_time);
 
 % % Run model animation: mview.m
 wmview(y,gam,tci)
