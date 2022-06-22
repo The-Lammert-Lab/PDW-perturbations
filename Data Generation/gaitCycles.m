@@ -1,14 +1,8 @@
 function gaitCycles(n)
 
 
-
 gam = [0.014; 0.016; 0.019];
-% pert = (.02:0.06:.38)';
 pert = (0.02:0.06:0.50)';
-
-gam = [0.014; 0.016];
-pert = (0.02:0.04:0.06)';
-
 
 conds = length(gam)*length(pert);
 c = 0;
@@ -22,7 +16,7 @@ for itor = 1:length(gam)
         
         c = c+1;
         % BE SURE OUTPUTS MATCH BECAUSE THEY CHANGED. 
-        [y, ~, ~, ~, stepL_metrics, ~, ~, pert_percent, yield, stepT_metrics] = ts_data_novis(n,gam(itor),pert(jtor));
+        [y, ~, ~, stepT_metrics, stepL_metrics, ~, ~, pert_percent, yield] = ts_data_novis(n,gam(itor),pert(jtor));
 
         % Simulation data
         falls(c) = sum(y==1);
