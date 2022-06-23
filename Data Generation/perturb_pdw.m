@@ -120,15 +120,11 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
        end
     
        %% Fall condition
-       if step_inds(1) <= 100
-           % This happens sometimes when a fall on step 1 occurs, but never
+       if ysw + init_sw_dist < (coeff(1)*xsw)+coeff(2) - fall_thresh || ...
+               yst < (coeff(1)*xst)+coeff(2) - fall_thresh || step_inds(1) <= 100
+           % First conditions happens when foot falls below line
+           % Last condition happens sometimes when a fall on step 1 occurs, but never
            % otherwise
-           fallIndex = step_inds(1);
-           outcome = 'fall';
-           break
-       elseif ysw + init_sw_dist < (coeff(1)*xsw)+coeff(2) - fall_thresh || ...
-               yst < (coeff(1)*xst)+coeff(2) - fall_thresh
-           % Foot falls below the line
            fallIndex = step_inds(i);
            outcome = 'fall';
            break
@@ -148,8 +144,7 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
         wmview(y,gam,tci)
     end
 
-end
-
+end %function 
 
 
 function ydot=f(t,y,gam)    %#ok<INUSL>
@@ -166,7 +161,7 @@ function ydot=f(t,y,gam)    %#ok<INUSL>
             y(4);
             sin(y(1)-gam)+sin(y(3))*(y(2)*y(2)-cos(y(1)-gam))];
 
-end
+end % function
 
 
 function [val,ist,dir]=collision(t,y)   %#ok<INUSL>
@@ -176,4 +171,4 @@ function [val,ist,dir]=collision(t,y)   %#ok<INUSL>
     ist = 1;            % Stop integrating if collision found
     dir = 1;            % Condition only true when passing from - to +
 
-end
+end % function

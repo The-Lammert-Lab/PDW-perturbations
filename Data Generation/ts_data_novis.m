@@ -80,7 +80,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
                 stepL_asym(count) = stepL_Rmean(count) - stepL_Lmean(count);
         end
 
-        waitbar(count/n,f, sprintf('Simulation progress: %d%%', floor(count/n*100)))
+        waitbar(count/n, f, sprintf('Simulation progress: %d%%', floor(count/n*100)))
 
     end
 
@@ -107,8 +107,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     
     mkdir(foldername);
     
-    % %% Make a massive matrix of all metrics and save to csv %%%
-    % %% Values in order of appearance
+    % %% Values in M in order of appearance
     % y = n-by-1 (column 1)
     % jac_eig = n-by-2 (columns 2-3)
     % stepT_metrics = n-by-3 (columns 4-6)
