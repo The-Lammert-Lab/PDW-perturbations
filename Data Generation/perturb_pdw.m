@@ -60,9 +60,8 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
     ysw = ym-L*cos(y(1,3)-y(1,1)+gam);
     
     % Fall detection
-    foot_fall_ind = [];
-    hip_fall_ind = [];
-    falltype = '';
+    outcome = 'nonfall';
+    fallIndex = NaN;
     
     % Distance below slope to count as a fall.
     fall_thresh = 0.01; 
@@ -124,38 +123,25 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
        if step_inds(1) <= 100
            % This happens sometimes when a fall on step 1 occurs, but never
            % otherwise
-           falltype = 'step1';
+           fallIndex = step_inds(1);
+           outcome = 'fall';
            break
        elseif ysw + init_sw_dist < (coeff(1)*xsw)+coeff(2) - fall_thresh || ...
                yst < (coeff(1)*xst)+coeff(2) - fall_thresh
            % Foot falls below the line
-           foot_fall_ind = i;
-           falltype = 'foot';
+           fallIndex = step_inds(i);
+           outcome = 'fall';
            break
        elseif ~isempty(hip_fall_ind)
            % Hip falls below the line
-           falltype = 'hip';
+           fallIndex = hip_fall_ind;
+           outcome = 'fall';
            break
        end
     
     end
     
     step_time = [step_time_tot(1), diff(step_time_tot)]';
-    
-    % Report fall data if applicable
-    switch falltype
-        case 'step1'
-            fallIndex = step_inds(1);
-            outcome = 'fall';
-        case 'foot'
-            fallIndex = step_inds(foot_fall_ind);
-            outcome = 'fall';
-        case 'hip'
-            outcome = 'fall';
-            fallIndex = hip_fall_ind;
-        otherwise
-            outcome = 'nonfall';
-    end
     
     if view
         % Run model animation

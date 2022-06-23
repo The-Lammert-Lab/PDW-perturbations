@@ -1,13 +1,11 @@
 function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, pert_perc, yield] = ts_data_novis(n,gam,pert)
 
-    [stepL_var, stepL_mean, stepL_asym, stepL_Lmean, stepL_Rmean,...
-        stepT_var, stepT_mean, stepT_asym, stepT_Lmean, stepT_Rmean] = deal(zeros(1,n));
+    [y, stepL_var, stepL_mean, stepL_asym, stepL_Lmean, stepL_Rmean,...
+        stepT_var, stepT_mean, stepT_asym, stepT_Lmean, stepT_Rmean] = deal(zeros(n,1));
     
     [IC, jac_eig] = deal(zeros(n,2));
     pert_perc = zeros(4,n);
     
-    count_fall = 0;
-    count_nonfall = 0;
     count_fallIC = 0;
     count_all = 0;
     count_allfalls = 0;
@@ -16,6 +14,8 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     steps = 50; % Number of steps model takes before outcome = nonfall
     view = 0; % Run model animation: view = 1
     
+    f = waitbar(0, 'Simulation progress: %0%%');
+
     while count < n
         [outcome, fallIndex, pert_percent, y0_init, ...
             step_inds, step_length, step_time] = perturb_pdw(steps,gam,pert,view);
@@ -36,13 +36,12 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     
                 elseif fallIndex >= step_inds(stepLim) && step_inds(stepLim) ~= 0
                     count = count + 1;
-                    count_fall = count_fall + 1;
-                    falls(count_fall) = count;
+                    y(count) = 1;
                     %%% Jacobian %%%
                     jac_eig(count,:) = Jac_edited(gam,y0_init);
                     %%% Initial condition %%%
-                    IC(count,1) = y0_init(1,1); % Initial theta value
-                    IC(count,2) = y0_init(3,1); % Initial phi value
+                    % theta then phi.
+                    IC(count,:) = [y0_init(1,1), y0_init(3,1)];
                     pert_perc(:,count) = pert_percent;
                     %%% Step time 2 %%%
                     stepT_var(count) = std(step_time(1:stepLim-1));
@@ -60,13 +59,12 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
                 end
             case 'nonfall' % non-falls
                 count = count + 1;
-                count_nonfall = count_nonfall + 1;
-                nonfalls(count_nonfall) = count;
+                y(count) = 0;
                 %%% Jacobian %%%
                 jac_eig(count,:) = Jac_edited(gam,y0_init);
                 %%% Initial condition %%%
-                IC(count,1) = y0_init(1,1); % Initial theta value
-                IC(count,2) = y0_init(3,1); % Initial phi value
+                % theta then phi values.
+                IC(count,:) = [y0_init(1,1), y0_init(3,1)];
                 pert_perc(:,count) = pert_percent;
                 %%% Step time 2 %%%
                 stepT_var(count) = std(step_time(1:stepLim-1));
@@ -81,25 +79,18 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
                 stepL_Lmean(count) = mean(step_length(2:2:stepLim-1));
                 stepL_asym(count) = stepL_Rmean(count) - stepL_Lmean(count);
         end
+
+        waitbar(count/n,f, sprintf('Simulation progress: %d%%', floor(count/n*100)))
+
     end
+
+    close(f)
     
     %% Output Values
     
     yield = (count/count_all)*100;
-    
     stepL_metrics = [stepL_var, stepL_mean, stepL_asym];
-    
     stepT_metrics = [stepT_var, stepT_mean, stepT_asym];
-    
-    % Create 1/0 labels
-    y = sort([nonfalls falls])';
-    
-    [idx,loc] = ismember(nonfalls,y);
-    out = loc(idx);
-    
-    y(out) = 0; % nonfalls
-    y(y~=0) = 1; % falls
-    
     
     %% Save data
     
@@ -116,11 +107,11 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     
     mkdir(foldername);
     
-    % %% Make a massive matrix of all metrics (not fall_steps) and save to csv %%%
+    % %% Make a massive matrix of all metrics and save to csv %%%
     % %% Values in order of appearance
     % y = n-by-1 (column 1)
     % jac_eig = n-by-2 (columns 2-3)
-    % stepT_metrics2 = n-by-3 (columns 4-6)
+    % stepT_metrics = n-by-3 (columns 4-6)
     % stepL_metrics = n-by-3 (columns 7-9)
     % IC = n-by-1 (column 10-11)
     
