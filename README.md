@@ -10,4 +10,4 @@ The main files in this folder are "perturb_pdw.m" and "collect_data.m," which en
 The main files in this folder are "pert_percent_histograms.m," "fallstephistogram.m," "linear_classify_clean.m," "kinematics_compare.m," and "HeatmapGrey.m". These were the files used to create the figures included in the manuscript. The other files are either auxilliary functions for those previously mentioned, or other pieces of analysis. 
 
 ## Brewermap colors
-This folder is copied from the GitHub repository "DrosteEffect/BrewerMap" to assist in creating pleasing figures. 
+This folder is copied from the GitHub repository "DrosteEffect/BrewerMap" to assist in creating quality figures. 
