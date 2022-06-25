@@ -40,7 +40,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
                     count = count + 1;
                     y(count) = 1;
                     %%% Jacobian %%%
-                    jac_eig(count,:) = Jac_edited(gam,y0_init);
+                    jac_eig(count,:) = Jac_eig_pdw(gam,y0_init);
                     %%% Initial condition %%%
                     % theta then phi.
                     IC(count,:) = [y0_init(1,1), y0_init(3,1)];
@@ -63,7 +63,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
                 count = count + 1;
                 y(count) = 0;
                 %%% Jacobian %%%
-                jac_eig(count,:) = Jac_edited(gam,y0_init);
+                jac_eig(count,:) = Jac_eig_pdw(gam,y0_init);
                 %%% Initial condition %%%
                 % theta then phi.
                 IC(count,:) = [y0_init(1,1), y0_init(3,1)];
