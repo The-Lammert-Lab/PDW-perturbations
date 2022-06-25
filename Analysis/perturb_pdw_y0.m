@@ -1,5 +1,6 @@
-function [a,t] = gen_eigs_y0(gam,steps,y0)
-%%%%%%% model simulation that takes in y0 %%%%%%
+function [a,t] = perturb_pdw_y0(gam,steps,y0)
+%%%%%%% Very old version of model simulation that takes in y0 %%%%%%
+%%% Only used to generate data for kinematics_compare.m
 
 per = 5;        % Max number of seconds allowed per step
 

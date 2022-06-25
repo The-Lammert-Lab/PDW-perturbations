@@ -1,5 +1,5 @@
-function e_n = Jac_edited(gam, y0)
-% Lammert (2020) - PDW Model Sandbox, Estimate Jacobian
+function e_n = Jac_eig_pdw(gam, y0)
+% Adam C. Lammert (2020) - PDW Model Sandbox, Estimate Jacobian
 
 % Lessons Learned:
 % 1. The analytical Jacobian is only for Theta (I think), thus 2x2.
@@ -10,38 +10,11 @@ function e_n = Jac_edited(gam, y0)
 
 % Setup
 % gam = 0.01; % 0.01 recommended by Garcia, 0.005 recommended by Garcia
-stable = 0; % 0 if gait is stable 1 if gait is unstable
 steps = 1;
 n = 1000; % number of simulation iterations
 c = 1e-6; % perturbation size
 period = 'long'; % 'short' or 'long'
 
-if strcmp(period,'short')  
-    % IC constants - short period
-    Theta00 = 0.943976;
-    Theta10 = -0.264561;
-    alpha = -1.090331;
-    c1 = 0.866610;
-elseif strcmp(period,'long')
-    % IC constants - long period
-    Theta00 = 0.970956;
-    Theta10 = -0.270837;
-    alpha = -1.045203;
-    c1 = 1.062895;
-else
-    error('period must be specified as short or long')
-end
-
-% Calculate STABLE ICs from theoretically determined equations
-% tgam3 = Theta00*gam^(1/3);
-% y0 = [tgam3+Theta10*gam;
-%       alpha*tgam3+(alpha*Theta10+c1)*gam;
-%       2*(tgam3+Theta10*gam);
-%       (alpha*tgam3+(alpha*Theta10+c1)*gam)*(1-cos(2*(tgam3+Theta10*gam)))];
-
-% Perturb STABLE ICs for experimentation
-% y0 = y0 + (1e-4)*randn(4,1);
-  
 % Simulate!
 % y1: theta
 % y2: thetadot
@@ -132,15 +105,5 @@ e_n = abs(diag(D)');
 [V D] = eigs(Jan);
 % disp('Magnitude of Eigenvalues (Analytical):')
 e_a = abs(real(diag(D)'));
-
-if gam < 0.015
-    if e_a(1) > 1 || e_a(2) > 1
-        stable = 1;
-    end
-else 
-    if e_n(1) > 1 || e_n(2) > 1
-        stable = 1;
-    end
-end
 
 %eof

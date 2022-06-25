@@ -1,6 +1,4 @@
 %%%%% visualize kinematic data comparisons %%%%%
-addpath('../Data Generation');
-
 
 gam = 0.019;
 steps = 9;
@@ -39,11 +37,11 @@ y0_5 = [0.321557285821432; -0.307976404827011; 0.645817118463110; -0.02172035930
 
 
 % Get data
-[a_1,t_1] = gen_eigs_y0(gam,steps,y0_1);
-[a_2,t_2] = gen_eigs_y0(gam,steps,y0_2);
-[a_3,t_3] = gen_eigs_y0(gam,steps,y0_3);
-% [a_4,t_4] = gen_eigs_y0(gam,steps,y0_4);
-[a_5,t_5] = gen_eigs_y0(gam,steps,y0_5);
+[a_1,t_1] = perturb_pdw_y0(gam,steps,y0_1);
+[a_2,t_2] = perturb_pdw_y0(gam,steps,y0_2);
+[a_3,t_3] = perturb_pdw_y0(gam,steps,y0_3);
+% [a_4,t_4] = perturb_pdw_y0(gam,steps,y0_4);
+[a_5,t_5] = perturb_pdw_y0(gam,steps,y0_5);
 
 
 % Graphing

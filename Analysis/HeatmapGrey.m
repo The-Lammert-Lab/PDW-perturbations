@@ -1,6 +1,5 @@
-% addpath('../Data/gaitCycles Manuscript1 data');
 
-
+%%%%% Create a nice looking greyscale heatmap
 
 % Gamma = linspace(0.014,0.019,6)';
 Gamma = [0.014; 0.016; 0.019];
