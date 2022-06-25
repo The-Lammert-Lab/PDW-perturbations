@@ -1,5 +1,9 @@
 function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, step_time] = perturb_pdw(steps,gam,pert,view)
 
+%%%%%%%%%% Apply perturbations to Horchler's PDW framework %%%%%%%%%%
+%%% Calculated kinematic metrics and determine outcome 
+
+
     %% General Setup
     
     % % IC constants - short period
