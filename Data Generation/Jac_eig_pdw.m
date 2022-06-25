@@ -33,7 +33,7 @@ for itor = 1:n
     %Yminus(itor,:) = y0 + c*temp;
     
     % Run simulation
-    y = simpwm_noviz(gam,steps,Yminus(itor,:)');
+    [y,~] = simpwm_noviz(gam,steps,Yminus(itor,:)');
         
     % Calculate heelstrike
     c2y1 = cos(2*y(end,1)); % Calculate once for new ICs

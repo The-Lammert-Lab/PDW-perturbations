@@ -1,4 +1,4 @@
-function [y] = simpwm_noviz(gam,steps,y0)
+function [y, t] = simpwm_noviz(gam,steps,y0)
 % SIMPWM_NOVIZ
 % variation of simpwm without visualization, inputted ICs
 %   SIMPWM simulates the "Simplest Walking Model" passive dynamic walker for
