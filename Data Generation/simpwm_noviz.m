@@ -1,6 +1,7 @@
 function [y, t] = simpwm_noviz(gam,steps,y0)
 % SIMPWM_NOVIZ
-% variation of simpwm without visualization, inputted ICs
+% variation of simpwm without visualization and with inputted ICs
+% 
 %   SIMPWM simulates the "Simplest Walking Model" passive dynamic walker for
 %   eight STEPS with a default slope, GAM, of 0.01 radians.
 %   
