@@ -1,4 +1,6 @@
-%%% Plot the number of steps each fall trial takes
+% Create log-scaled histograms of 
+% the frequency of each number of steps all falling trials take.
+% Find percent of falls on first and second steps.
 
 %% Load data
 addpath('../Brewermap colors');
@@ -49,12 +51,3 @@ for i = 1:size(fallsteps,2)
 end
 
 % xlabel(t,'Number of steps','Fontsize',14);
-
-
-
-
-
-
-
-
-

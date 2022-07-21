@@ -1,6 +1,5 @@
-%%% Graph the perturbation percent in histograms
-%%% Using data from gamma = 0.019 pert = +/- 32% from original manuscript
-%%% data
+% Plot histograms of the the percent perturbation experienced by each
+% IC variable for gamma = 0.014, 0.016 and 0.019
 
 addpath('../Brewermap colors');
 
@@ -20,15 +19,12 @@ M = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/m
 yall(:,size(yall,2)+1) = M(:,1);
 
 
-
-% pert = 0.32;
 pert = 0.50;
 
 gam = [0.014, 0.016, 0.019];
 p_ind = (1:4:size(P,1));
 bin_edges = -pert*100:pert*100;
 
-% map = brewermap(2,'Set1');
 map = brewermap(40,'Greys');
 
 light = 25;

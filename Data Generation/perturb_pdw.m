@@ -1,9 +1,46 @@
+% perturb_pdw 
+% 
+% Apply perturbations to Horchler's PDW framework.
+% Calculate kinematic metrics and determine outcome. 
+% 
+% ARGUMENTS: 
+% 
+%   steps: 1x1 scalar,
+%       number of steps to simulate 
+%       (before trial is classified as a nonfall)
+% 
+%   gam: 1x1 scalar, 
+%       the slope value in radians
+% 
+%   pert: 1x1 scalar, 
+%       percent by which to perturb the ICs
+%       0 <= pert <= 1
+% 
+%   view: boolean
+%       `true` runs the animation
+% 
+% OUTPUTS:
+% 
+%   outcome: char, 
+%       either 'fall' or 'nonfall' based on simulation outcome.
+% 
+%   fallIndex:
+% 
+%   pert_percent: 4x1 numerical vector,
+%       the perturbation size applied to each IC value
+%       relative to its original value.
+%       -pert <= pert_percent <= pert
+% 
+%   y0_init: 4x1 numerical vector, 
+%       the pre-perturbaiton ICs
+% 
+%   step_inds:
+% 
+%   step_length: 
+%
+%   step_time:
+
 function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, step_time] = perturb_pdw(steps,gam,pert,view)
-
-%%%%%%%%%% Apply perturbations to Horchler's PDW framework %%%%%%%%%%
-%%% Calculated kinematic metrics and determine outcome 
-
-
     %% General Setup
     
     % % IC constants - short period
