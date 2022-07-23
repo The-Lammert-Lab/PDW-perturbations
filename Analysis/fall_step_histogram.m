@@ -1,5 +1,7 @@
-% Create log-scaled histograms of 
-% the frequency of each number of steps all falling trials take.
+% fall_step_histogram
+% 
+% Create log-scaled histograms for 
+% the frequency of each number of steps each falling trials take.
 % Find percent of falls on first and second steps.
 
 %% Load data
@@ -16,6 +18,8 @@ fallsteps(1:length(fallsteps16),2) = fallsteps16;
 fallsteps(1:length(fallsteps19),3) = fallsteps19;
 
 %% Plot
+
+% Setup
 gam = [0.014, 0.016, 0.019];
 
 map = brewermap(50,'Greys');
@@ -24,19 +28,19 @@ percent_firstandsecond = zeros(1,3);
 percent_first = zeros(1,3);
 
 figure
-% t = tiledlayout(3,1,'TileSpacing','Compact');
 t = tiledlayout(3,1);
 for i = 1:size(fallsteps,2)
     
-    
     data = fallsteps(~isnan(fallsteps(:,i)),i);
     
+    % Get percent occurrence for first and second steps
     first_and_second_steps = sum(data == 1 | data == 2);
     first_steps = sum(data == 1);
     
     percent_firstandsecond(i) = (first_and_second_steps / length(data))*100;
     percent_first(i) = (first_steps / length(data))*100;
     
+    % Plot
     nexttile
     h = histogram(data,'FaceColor',map(40,:));
     h.BinWidth = 1;

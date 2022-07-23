@@ -1,22 +1,16 @@
-%%% Calculate fall to non-fall ratio
+% fall_to_nonfall
+% 
+% Calculate fall to non-fall ratio from 1/0 data. 
+% Visualize in table. 
 
-M = load('../Data/Data n50000g0.014p0.32d13-May22/metrics.csv');
+M = load('../Data/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
 y = M(:,1);
 
-M = load('../Data/Data n50000g0.014p0.32d21-May22 - NEWFALL/metrics.csv');
-y(:,size(y,2)+1) = M(:,1);
+M = load('../Data/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
+y(:,end+1) = M(:,1);
 
-M = load('../Data/Data n50000g0.016p0.32d14-May22/metrics.csv');
-y(:,size(y,2)+1) = M(:,1);
-
-M = load('../Data/Data n50000g0.016p0.32d22-May22 - NEWFALL/metrics.csv');
-y(:,size(y,2)+1) = M(:,1);
-
-M = load('../Data/Data n50000g0.019p0.32d20-May22/metrics.csv');
-y(:,size(y,2)+1) = M(:,1);
-
-M = load('../Data/Data n50000g0.019p0.32d23-May22 - NEWFALL/metrics.csv');
-y(:,size(y,2)+1) = M(:,1);
+M = load('../Data/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
+y(:,end+1) = M(:,1);
 
 % 0 = non-fall, 1 = fall
 
@@ -32,16 +26,8 @@ ratio = falls ./ nonfalls;
 
 gam = {'fall:nonfall 0.014';'fall:nonfall 0.016';'fall:nonfall 0.019'};
 
-T = table(ratio(1:2:end),ratio(2:2:end),'RowNames',gam);
-
-T = renamevars(T,["Var1","Var2"],...
-    ["Old fall criteria", "New fall criteria"]);
+T = table(ratio,'RowNames',gam);
 
 figure
 uitable('Data',T{:,:},'ColumnName',T.Properties.VariableNames,...
     'RowName',T.Properties.RowNames,'Units', 'Normalized', 'Position',[0, 0, 1, 1]);
-
-
-
-
-

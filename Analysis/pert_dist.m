@@ -1,33 +1,35 @@
-%%% Attempt to find a metric for perturbation magnitude.
-%%% 4d Eucdist 
+% pert_dist
+% 
+% Attempt to find a visualization/metric
+% for perturbation magnitude using 4d Euclidian distance 
+% 
+% Generates a tiled figure of frequency against distance from
+% 0 in histograms.
 
 addpath('../Brewermap colors');
 
-
 %% Load data
-Pall = load('../Data/Data n50000g0.014p0.32d13-May22/perturbationPercent.csv');
-M = load('../Data/Data n50000g0.014p0.32d13-May22/metrics.csv');
+
+P_all = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/perturbationPercent.csv');
+M = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
 y = M(:,1);
 
-Pall(5:8,:) = load('../Data/Data n50000g0.016p0.32d14-May22/perturbationPercent.csv');
-M = load('../Data/Data n50000g0.016p0.32d14-May22/metrics.csv');
-y(:,2) = M(:,1);
+P_all(end+1:end+4,:) = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/perturbationPercent.csv');
+M = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
+y(:,end+1) = M(:,1);
 
-Ptemp = load('../Data/Data n50000g0.019p0.32d29-Jun21/perturbationPercent.csv');
-Pall(9:12,:) = Ptemp(:,1:50000);
-M = load('../Data/Data n50000g0.019p0.32d29-Jun21/fullmetrics.csv');
-M = M(1:50000,:);
-y(:,3) = M(:,1);
+P_all(end+1:end+4,:) = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/perturbationPercent.csv');
+M = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
+y(:,end+1) = M(:,1);
 
 %% Distance
 
-d = NaN(size(y));
+d = zeros(size(y));
 w = zeros(4,1);
-pind = [1 5 9];
-
+pind = (1:4:size(P_all,1));
 
 for i = 1:size(y,2)
-    P = Pall(pind(i):pind(i)+3,:);   
+    P = P_all(pind(i):pind(i)+3,:);   
     
     for j = 1:length(P)
         v = P(:,j);        
@@ -58,24 +60,6 @@ for i = 1:size(d,2)
     histogram(data(y(:,i)==1),'FaceColor',map(1,:),'facealpha',.5,'edgecolor','none')
     title(['Gamma = ', num2str(gam(i))],'Fontsize',18)
     xlabel('Distance','Fontsize',14);
-    ylabel('Occurance','Fontsize',14);
+    ylabel('Frequency','Fontsize',14);
     legend('non-falls','falls','Location','northeast')
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,27 +17,34 @@
 % 
 % See also:
 % linear_classify
+% linear_classify_processing
 
 function [test, train] = split_data(filename)
+
+    arguments
+        filename char
+    end
 
     % Organization of data matrix M:
     % 
     % y = n-by-1 (column 1) 
     % jac_eig = n-by-2 (columns 2-3)
-    % stepT_metrics2 = n-by-3 (columns 4-6)
+    % stepT_metrics = n-by-3 (columns 4-6)
     % stepL_metrics = n-by-3 (columns 7-9)
     % IC = n-by-1 (column 10-11)
     
-    % Load data
+    %% Load data
     M = readtable(filename);
 
     if mod(height(M),2) ~= 0
         M = M(1:height(M)-1,:);
     end
     
-    % Format into structs
+    %% Format into structs
     all = struct('y',M.Var1,'eigenvalues',[M.Var2, M.Var3],'ICpt',[M.Var10, M.Var11]);
     
+    % Split
+    % Data is completely random, so split is directly in half.
     train = structfun(@(x) x(1:length(x)/2,:), all, 'UniformOutput', false);
     test = structfun(@(x) x((length(x)/2)+1:end,:), all, 'UniformOutput', false);
 
@@ -58,7 +65,7 @@ function [test, train] = split_data(filename)
         end
     end
 
-    % Normalize step length and time metrics
+    %% Normalize step length and time metrics
     stepMetOrder = fieldnames(train.ST)'; % Fieldnames before creating "combinedNorm"
     count = 0;
     for ii = stepMetOrder
@@ -70,20 +77,25 @@ function [test, train] = split_data(filename)
         test.SL.combinedNorm(:,count) = (test.SL.(ii{1}) - min(test.SL.(ii{1})))./range(test.SL.(ii{1}));
     end
     
-    % Create separate field with all combined norms together
+    %% Additional fields
+
+    % All combined norms together
     train.ST_SL_normCombAll = [train.ST.combinedNorm, train.SL.combinedNorm];
     test.ST_SL_normCombAll = [test.ST.combinedNorm, test.SL.combinedNorm];
     
+    % Step length variability and mean
     train.SL_var_mean = [train.SL.Var, train.SL.Mean];
     test.SL_var_mean = [test.SL.Var, test.SL.Mean];
     
+    % Step time and step length variability
     train.ST_SL_var = [train.ST.Var, train.SL.Var];
     test.ST_SL_var = [test.ST.Var, test.SL.Var];
     
-    % This should be neater, but it's here for now.
+    % Step length variability and mean normalized
     train.SL_var_meanNorm = [train.SL.combinedNorm(:,1), train.SL.combinedNorm(:,2)];
     test.SL_var_meanNorm = [test.SL.combinedNorm(:,1), test.SL.combinedNorm(:,2)];
     
+    % Step time and step length variability normalized
     train.ST_SL_varNorm = [train.ST.combinedNorm(:,1), train.SL.combinedNorm(:,1)];
     test.ST_SL_varNorm = [test.ST.combinedNorm(:,1), test.SL.combinedNorm(:,1)];
 
