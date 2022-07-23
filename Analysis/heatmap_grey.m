@@ -1,7 +1,8 @@
+% heatmap_grey
+% 
+% Create a nice looking greyscale heatmap. 
+% Used with fall ratio and percent yield data.
 
-%%%%% Create a nice looking greyscale heatmap
-
-% Gamma = linspace(0.014,0.019,6)';
 Gamma = [0.014; 0.016; 0.019];
 Mags = (2:6:50);
 Mags = flip(Mags);
@@ -15,10 +16,8 @@ Magstr = cell(length(Mags),1);
 for itor = 1:length(Mags)
     Magstr(itor) = cellstr(num2str(Mags(itor)));
 end
-% pm = repelem("\pm",length(Mags),1);
-% Magstr = append(pm,Magstr);
 
-% Heatmap
+%% Load data and set specs
 RHO = load('../Data/Data NEWFALL (reviewer edits)/Gaitcycles combined n20000g0.014_0.019p0.02_0.5/fallratio1419NEWFALL.csv');
 spec = '%3.2f';
 thresh = 0.7;
@@ -29,12 +28,10 @@ thresh = 0.7;
 
 RHO = flip(RHO);
 
-% Viz
-% figure
-% tiledlayout(2,1,'TileSpacing','Compact');
-% nexttile
+%% Viz
+figure
 imagesc(RHO)
-%colorbar
+% colorbar
 hold on
 for itor = 1:size(RHO,2)
     for jtor = 1:size(RHO,1)
@@ -57,15 +54,7 @@ xlabel('\boldmath$\gamma \ (rad.)$','Interpreter','Latex','Fontsize',18);
 % ylabel('Perturbation (%)');
 ylabel('\boldmath$\delta$','Interpreter','Latex','Fontsize',23);
 
-
 cmap = colormap('gray');
 cmap = flipud(cmap);
 colormap(cmap)
-
-
-% gamma = repelem(gam,length(pert));
-% perturbation = string(repmat(pert*100,length(gam),1));
-% pm = repelem("\pm",length(perturbation),1);
-% perturbation = append(pm,perturbation);
-
 

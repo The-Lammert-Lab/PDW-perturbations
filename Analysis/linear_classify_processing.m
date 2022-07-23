@@ -25,6 +25,7 @@ for i = 1:length(filenames)
     clear rownames
     
     % Initial table for subsequent joins 
+    % Loop to avoid issues with a nested struct
     count = 0;
     for ii = metrics
         count = count + 1;
@@ -32,6 +33,7 @@ for i = 1:length(filenames)
         if ~isstruct(tab.(ii{1}).(subnames{1}))
             T = tab.(ii{1});
             T.Properties.RowNames = metrics(count);
+            % Remove this one from the subsequent joins
             metrics = metrics(1:end ~= count);
             break
         end
@@ -43,17 +45,25 @@ for i = 1:length(filenames)
         % ST and SL are nested structs
         if isstruct(tab.(ii{1}).(subnames{1}))
             for jj = subnames
+                % Nested struct not converted initially
                 T_new = struct2table(tab.(ii{1}).(jj{1}));
+
+                % Save table organization and join
                 currnames = T.Properties.RowNames; 
                 [T,ileft,iright] = outerjoin(T,T_new,'MergeKeys',true);
+
+                % Match metric names properly
                 rownames(ileft > 0) = currnames;
                 rownames(iright > 0) = {strcat(ii{1}, '_', jj{1})};
                 T.Properties.RowNames = rownames;
             end
     
         else
+            % Save table organization and join
             currnames = T.Properties.RowNames;
             [T,ileft,iright] = outerjoin(T,tab.(ii{1}),'MergeKeys',true);
+
+            % Match metric names properly
             rownames(ileft > 0) = currnames;
             rownames(iright > 0) = ii;
             T.Properties.RowNames = rownames;

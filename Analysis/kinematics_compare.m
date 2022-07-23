@@ -1,3 +1,5 @@
+% kinematics_compare
+% 
 % Generates a figure comparing
 % time series kinematics of phi and theta 
 % for two perturbed non-falls, one perturbed fall,
@@ -44,7 +46,7 @@ pt_nonfall = [y_nonfall(:,1), y_nonfall(:,3)];
 pt_prepert = [y_prepert(:,1), y_prepert(:,3)];
 pt_altnf = [y_altnf(:,1), y_altnf(:,3)];
 
-%% Graphing
+%% Plotting
 
 fontsz = 11.5;
 linewth = 2;
@@ -75,7 +77,7 @@ xlim([0 35])
 
 xlabel(t, 'time $\left( \sqrt{\frac{l}{g}} \right)$','Interpreter','latex','Fontsize',23)
 
-%% B/W
+%% Black and White
 
 % figure
 % t = tiledlayout(2,1);
@@ -108,11 +110,11 @@ xlabel(t, 'time $\left( \sqrt{\frac{l}{g}} \right)$','Interpreter','latex','Font
 
 %% Alternate visualizations
 
-nIDs = 6;
-alphabet = ('a':'z').';
-chars = num2cell(alphabet(1:nIDs));
-chars = chars.';
-charlbl = strcat('(',chars,')'); % {'(a)','(b)','(c)'}
+% nIDs = 6;
+% alphabet = ('a':'z').';
+% chars = num2cell(alphabet(1:nIDs));
+% chars = chars.';
+% charlbl = strcat('(',chars,')'); % {'(a)','(b)','(c)'}
 
 % % Theta
 % figure

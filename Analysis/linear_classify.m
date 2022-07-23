@@ -14,60 +14,75 @@
 % 
 % See also: 
 % split_data
-
+% linear_classify_processing
 
 function results = linear_classify(filename)
 
+    arguments
+        filename char
+    end
+
+    % Get test and train sets
     [test, train] = split_data(filename);
         
     %% Train w and c
     names = fieldnames(train)';
-    names = names(2:end); % Remove 'y' from names
+    names = names(1:end ~= find([names{:}] == 'y')); % remove y from names
     
     for ii = names
-        
+
+        % ST and SL are substructs
         if isstruct(train.(ii{1}))
             subnames = fieldnames(train.(ii{1}))';
             for jj = subnames
                 X = train.(ii{1}).(jj{1});
-                [w.(ii{1}).(jj{1}), c.(ii{1}).(jj{1})] = classify_bme(train.y,X);
+                % Create structs of w and c with associated fieldnames
+                [w.(ii{1}).(jj{1}), c.(ii{1}).(jj{1})] = classify_params(train.y,X);
             end
         else
             X = train.(ii{1});
-            [w.(ii{1}), c.(ii{1})] = classify_bme(train.y,X);
+            % Create structs of w and c with associated fieldnames
+            [w.(ii{1}), c.(ii{1})] = classify_params(train.y,X);
         end
-        
+
     end
     
     
     %% Evaluate
     for ii = names
         
+        % ST and SL are substructs
         if isstruct(test.(ii{1}))
             subnames = fieldnames(test.(ii{1}))';
             for jj = subnames
+                % Get prediction 
                 X = test.(ii{1}).(jj{1});
                 y_hat = (X*w.(ii{1}).(jj{1}))>c.(ii{1}).(jj{1});
                 
+                % True/False Positive/Negatives 
                 TP = sum((test.y==1)&(y_hat==1));
                 FP = sum((test.y==0)&(y_hat==1));
                 FN = sum((test.y==1)&(y_hat==0));
                 TN = sum((test.y==0)&(y_hat==0));
                 
+                % Add results to same fields
                 results.(ii{1}).(jj{1}).specificity = TN/(TN+FP);
                 results.(ii{1}).(jj{1}).sensitivity = TP/(TP+FN);
                 results.(ii{1}).(jj{1}).accuracyBal = (results.(ii{1}).(jj{1}).sensitivity + results.(ii{1}).(jj{1}).specificity)/2;
             end
 
         else
+            % Get prediction
             X = test.(ii{1});
             y_hat = (X*w.(ii{1}))>c.(ii{1});
             
+            % True/False Positive/Negatives 
             TP = sum((test.y==1)&(y_hat==1));
             FP = sum((test.y==0)&(y_hat==1));
             FN = sum((test.y==1)&(y_hat==0));
             TN = sum((test.y==0)&(y_hat==0));
             
+            % Add results to same fields
             results.(ii{1}).specificity = TN/(TN+FP);
             results.(ii{1}).sensitivity = TP/(TP+FN);
             results.(ii{1}).accuracyBal = (results.(ii{1}).sensitivity + results.(ii{1}).specificity)/2;

@@ -1,4 +1,6 @@
-% Generate a bar chart comparing fall and non-fall 
+% fall_compare_bar
+% 
+% Generate a tiled figure with bar chart comparing fall and non-fall 
 % occurances between gammas at the
 % same perturbation percent
 % 
@@ -18,7 +20,7 @@ falls = (ratiodata ./ (ratiodata+1))*n;
 nonfalls = (ones(size(ratiodata)) ./ (ratiodata+1))*n;
 
 figure
-t = tiledlayout(3,length(pert)/3,'TileSpacing','Compact');
+t = tiledlayout('flow','TileSpacing','Compact');
 for i = 1:size(ratiodata,1)
     nexttile(i)
     bar([falls(i,:);nonfalls(i,:)]')
