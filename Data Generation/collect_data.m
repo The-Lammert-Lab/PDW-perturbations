@@ -1,8 +1,80 @@
+% collect_data
+% 
+% Collect data from perturb_pdw.m
+% Synthesize kinematic metrics and other relevant data
+% and save all files to csv
+% 
+% ARGUMENTS:
+%   
+%   n: 1 x 1 scalar,
+%       the number of trials to simulate.
+% 
+%   gam: 1 x 1 scalar, 
+%       the slope value in radians.       
+% 
+%   pert: 1 x 1 scalar, 
+%       percent by which to perturb the ICs
+%       0 <= pert <= 1
+% 
+% OUTPUTS:
+% 
+%   y: n x 1 numerical vector, 
+%       vector of 1s and 0s representing falls and nonfalls, respectively.
+% 
+%   IC: n x 2 numerical vector, 
+%       Initial condition theta (:,1) and phi (:,2) 
+%       values for each non-discard trial.
+% 
+%   IC_fall: ? x 2 numerical vector,
+%       Initial condition theta (:,1) and phi (:,2) for all early fall trials.
+%       length is unknown but can be estimated from percent yield data.
+%   
+%   stepT_metrics: n x 3 numerical vector, 
+%       Step time variability (standard deviation), mean, and 
+%       asymmetry, respectively.
+%   
+%   stepL_metrics: n x 3 numerical vector, 
+%       Step length variability (standard deviation), mean, and 
+%       asymmetry, respectively.
+% 
+%   fall_steps: ? x 2 numerical vector,
+%       Number of steps each trial took before a fall. 
+%       length is unknown because early falls are counted too. 
+% 
+%   jac_eig: n x 2 numerical vector,
+%       Jacobian eigenvalues of theta for each trial
+% 
+%   pert_perc: 4 x 100 numerical vector, 
+%       Percent perturbation experienced by each IC variable.
+%       [theta; thetadot; phi; phidot].
+% 
+%   yield: 1 x 1 scalar, 
+%       percent yield.
+% 
+% CSVs saved:
+% 
+%   'metrics.csv' = [y jac_eig stepT_metrics stepL_metrics IC];
+%     
+%   'IC_fall_data.csv' = IC_fall
+%     
+%   'fall_steps_data.csv' = fall_steps
+%     
+%   'perturbationPercent.csv' = pert_perc
+%     
+%   'percentYield.csv' = yield
+% 
+% See also:
+% perturb_pdw
+% Jac_eig_pdw
+% heatmap_loop
+
 function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, pert_perc, yield] = collect_data(n,gam,pert)
 
-%%%%%%%%%% Collect data from perturb_pdw.m %%%%%%%%%%
-%%% Gather and synthesize kinematic metrics and other relevant data
-%%% Save all files to csv
+    arguments
+        n (1,1) {mustBePositive, mustBeInteger}
+        gam (1,1) double {mustBeGreaterThanOrEqual(gam,0), mustBeLessThanOrEqual(gam, 0.019)}
+        pert (1,1) double {mustBeGreaterThanOrEqual(pert,0), mustBeLessThanOrEqual(pert, 1)}
+    end
 
     %% Initialization 
     [y, stepL_var, stepL_mean, stepL_asym, stepL_Lmean, stepL_Rmean,...
@@ -17,14 +89,13 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
 
     stepLim = 6; % Number of steps for cutoff
     steps = 50; % Number of steps model takes before outcome = nonfall
-    view = 0; % Run model animation: view = 1
 
     f = waitbar(0, 'Simulation progress: 0%');
 
     %% Loop
     while count < n
         [outcome, fallIndex, pert_percent, y0_init, ...
-            step_inds, step_length, step_time] = perturb_pdw(steps,gam,pert,view);
+            step_inds, step_length, step_time] = perturb_pdw(steps,gam,pert);
         count_all = count_all+1;
     
         switch outcome
@@ -99,7 +170,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     d = date;
     d = d([1:6,10:11]);
     temp = 0;
-    foldername = strcat('Data n',num2str(n),'g',num2str(gam),'p',num2str(pert),'d',num2str(d));
+    foldername = strcat('../Data/Data n',num2str(n),'g',num2str(gam),'p',num2str(pert),'d',num2str(d));
     
     % So it doesn't error if there's accidentally a folder with same name
     while exist(foldername,'dir') == 7
