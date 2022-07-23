@@ -1,25 +1,24 @@
 % pert_dist
 % 
-% Attempt to find a visualization/metric
-% for perturbation magnitude using 4d Euclidian distance 
+% Attempt to find a visualization/metric for
+% perturbation magnitude using 4d Euclidian distance 
 % 
-% Generates a tiled figure of frequency against distance from
-% 0 in histograms.
+% Generates a tiled figure of frequency against distance from 0 in histograms.
 
 addpath('../Brewermap colors');
 
 %% Load data
 
-P_all = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/perturbationPercent.csv');
-M = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
+P_all = load('../Data/Data n50000g0.014p0.5d03-Jun22/perturbationPercent.csv');
+M = load('../Data/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
 y = M(:,1);
 
-P_all(end+1:end+4,:) = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/perturbationPercent.csv');
-M = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
+P_all(end+1:end+4,:) = load('../Data/Data n50000g0.016p0.5d04-Jun22/perturbationPercent.csv');
+M = load('../Data/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
 y(:,end+1) = M(:,1);
 
-P_all(end+1:end+4,:) = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/perturbationPercent.csv');
-M = load('../../Working folder copy (DO NOT DELETE -- HAS DATA)/Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
+P_all(end+1:end+4,:) = load('../Data/Data n50000g0.019p0.5d05-Jun22/perturbationPercent.csv');
+M = load('../Data/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
 y(:,end+1) = M(:,1);
 
 %% Distance

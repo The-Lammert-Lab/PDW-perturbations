@@ -56,7 +56,7 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
     
     arguments
         steps (1,1) {mustBePositive, mustBeInteger}
-        gam (1,1) double {mustBeGreaterThanOrEqual(gam,0), mustBeLessThanOrEqual(gam, 0.019)}
+        gam (1,1) double {mustBeGreaterThan(gam,0.001), mustBeLessThanOrEqual(gam, 0.019)}
         pert (1,1) double {mustBeGreaterThanOrEqual(pert,0), mustBeLessThanOrEqual(pert, 1)}
         view (1,1) {mustBeInteger, mustBeGreaterThanOrEqual(view,0), mustBeLessThanOrEqual(view,1), mustBeNumericOrLogical} = false
     end
