@@ -5,42 +5,62 @@
 % 
 % ARGUMENTS: 
 % 
-%   steps: 1x1 scalar,
+%   steps: 1 x 1 integer scalar,
 %       number of steps to simulate 
 %       (before trial is classified as a nonfall)
 % 
-%   gam: 1x1 scalar, 
-%       the slope value in radians
+%   gam: 1 x 1 scalar, 
+%       the slope value in radians.       
 % 
-%   pert: 1x1 scalar, 
+%   pert: 1 x 1 scalar, 
 %       percent by which to perturb the ICs
 %       0 <= pert <= 1
 % 
 %   view: boolean
-%       `true` runs the animation
+%       `true` runs the animation. Default = `false`. 
 % 
 % OUTPUTS:
 % 
 %   outcome: char, 
 %       either 'fall' or 'nonfall' based on simulation outcome.
 % 
-%   fallIndex:
+%   fallIndex: 1 x 1 scalar, 
+%       the heelstrike index at which a fall occurred.
 % 
-%   pert_percent: 4x1 numerical vector,
+%   pert_percent: 4 x 1 numerical vector,
 %       the perturbation size applied to each IC value
 %       relative to its original value.
 %       -pert <= pert_percent <= pert
 % 
-%   y0_init: 4x1 numerical vector, 
+%   y0_init: 4 x 1 numerical vector, 
 %       the pre-perturbaiton ICs
 % 
-%   step_inds:
+%   step_inds: n x 1 numerical vector, 
+%       the index at which each heelstrike occurred.
+%       Compare fallIndex against this vector to
+%       check minimum step criteria.
+%       n is the number of steps taken.
 % 
-%   step_length: 
+%   step_length: n x 1 numerical vector,
+%       the length of each step calculated at heelstrike. 
+%       n is the number of steps taken. 
 %
-%   step_time:
+%   step_time: n x 1 numerical vector, 
+%       the time between each heelstrike
+%       n is the number of steps taken.
+% 
+% See also:
+% collect_data
 
 function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, step_time] = perturb_pdw(steps,gam,pert,view)
+    
+    arguments
+        steps (1,1) {mustBePositive, mustBeInteger}
+        gam (1,1) double {mustBeGreaterThanOrEqual(gam,0), mustBeLessThanOrEqual(gam, 0.019)}
+        pert (1,1) double {mustBeGreaterThanOrEqual(pert,0), mustBeLessThanOrEqual(pert, 1)}
+        view (1,1) {mustBeInteger, mustBeGreaterThanOrEqual(view,0), mustBeLessThanOrEqual(view,1), mustBeNumericOrLogical} = false
+    end
+
     %% General Setup
     
     % % IC constants - short period
@@ -83,11 +103,11 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
     t = 0;          % Vector to save times
     tci = 0;        % Collision index vector
     h = [0 per];    % Integration period in seconds
-    
-    step_inds = zeros(1,steps); % Step indices
-    step_length = zeros(1,steps); % Step lengths
-    step_time_tot = zeros(1,steps); % Time after each step from beginning 
-    
+
+    step_inds = zeros(steps,1); % Step indices
+    step_length = zeros(steps,1); % Step lengths
+    step_time_tot = zeros(steps,1); % Time after each step from beginning 
+
     % Leg length
     L = 1; 
     % Position of stance foot
@@ -178,7 +198,7 @@ function [outcome, fallIndex, pert_percent, y0_init, step_inds, step_length, ste
     
     end
     
-    step_time = [step_time_tot(1), diff(step_time_tot)]';
+    step_time = [step_time_tot(1); diff(step_time_tot)];
     
     if view
         % Run model animation

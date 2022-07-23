@@ -1,5 +1,7 @@
-% Jac_eig_pdw - PDW Model Sandbox, Estimate Jacobian
+% Jac_eig_pdw
 %
+% Estimate the Jacobian for Theta
+% 
 % ARGUMENTS: 
 % 
 %   gam: 1x1 scalar, 
@@ -13,14 +15,13 @@
 %   e_n: 2x2 Jacobian of Theta
 % 
 % Author: Adam C. Lammert (2020)
-% 
-% Lessons Learned:
-% 1. The analytical Jacobian is only for Theta, thus 2x2.
-% 2. The simulation for certain configurations results in no movement.
-%     It's not clear why this happens, but I currently discard those
-%     solutions in the numerical Jacobian estimation procedure.
 
 function e_n = Jac_eig_pdw(gam, y0)
+
+    arguments
+        gam (1,1) double {mustBeGreaterThanOrEqual(gam,0), mustBeLessThanOrEqual(gam, 0.019)}
+        y0 (4,1) double
+    end
 
     % Setup
     steps = 1;
