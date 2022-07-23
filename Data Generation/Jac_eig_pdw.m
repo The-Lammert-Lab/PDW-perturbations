@@ -19,7 +19,7 @@
 function e_n = Jac_eig_pdw(gam, y0)
 
     arguments
-        gam (1,1) double {mustBeGreaterThanOrEqual(gam,0), mustBeLessThanOrEqual(gam, 0.019)}
+        gam (1,1) double {mustBeGreaterThan(gam,0.001), mustBeLessThanOrEqual(gam, 0.019)}
         y0 (4,1) double
     end
 

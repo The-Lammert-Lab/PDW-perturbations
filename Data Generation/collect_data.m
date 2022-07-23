@@ -72,7 +72,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
 
     arguments
         n (1,1) {mustBePositive, mustBeInteger}
-        gam (1,1) double {mustBeGreaterThanOrEqual(gam,0), mustBeLessThanOrEqual(gam, 0.019)}
+        gam (1,1) double {mustBeGreaterThan(gam,0.001), mustBeLessThanOrEqual(gam, 0.019)}
         pert (1,1) double {mustBeGreaterThanOrEqual(pert,0), mustBeLessThanOrEqual(pert, 1)}
     end
 
@@ -209,10 +209,3 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     writematrix(yield, fullname);
 
 end
-
-
-
-
-
-
-
