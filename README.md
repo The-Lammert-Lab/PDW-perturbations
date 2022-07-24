@@ -37,5 +37,5 @@ or other pieces of analysis. The data files loaded in these are shown as an exam
 what data each script is able to process.
 
 ## Brewermap colors
-This folder is copied from the GitHub repository `DrosteEffect/BrewerMap` to 
+This folder is copied from the GitHub repository [DrosteEffect/BrewerMap](https://github.com/DrosteEffect/BrewerMap) to 
 assist in creating quality figures. 
