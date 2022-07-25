@@ -1,26 +1,23 @@
 % heatmap_grey
 % 
 % Create a nice looking greyscale heatmap of either
-% Fall ratio or percent yield data.
+% fall ratio or percent yield data.
 % Used with `gaitCyclesProcessed...` output from `heatmap_loop.m`.
 
 %% Load data, extract info
 full_data = readtable(['../Data/Gaitcycles data n20000g0.016_0.019p0.02_0.5d01-Jun22/' ...
     'gaitCyclesProcessed0.016_0.019_0.02_0.5.csv']);
 
-gam_diff = diff(table2array(full_data(:,1)));
-
-% How many perturbations at each gamma. Should always be the same so 
-% only need row(1).
-[row, ~] = find(gam_diff ~= 0);
-new_gam = row(1);
+% How many perturbations at each gamma. 
+% Should always be the same so only need first value.
+[pert_tot, ~] = find(diff(table2array(full_data(:,1))) ~= 0, 1, 'first');
 
 % Get gamma values from table.
 Gammastr = unique(table2array(full_data(:,1)));
 Gammastr = cellstr(num2str(Gammastr));
 
 % Get perturbation information from table
-Magstr = table2array(full_data(1:new_gam,2));
+Magstr = table2array(full_data(1:pert_tot,2));
 
 % Strip '\pm' from data (holdover from previous versions, but data is still
 % saved like this).
@@ -30,7 +27,7 @@ Magstr = flip(Magstr);
 %% Choose data to plot and set specs
 
 % Fall ratio is Var 3 of data table.
-data = reshape(table2array(full_data(:,3)), [new_gam, length(Gammastr)]);
+data = reshape(table2array(full_data(:,3)), [pert_tot, length(Gammastr)]);
 
 % Set specifications for heatmap 
 spec = '%3.2f';
