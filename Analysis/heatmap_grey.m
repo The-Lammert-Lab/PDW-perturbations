@@ -26,23 +26,23 @@ Magstr = flip(Magstr);
 
 %% Choose data to plot and set specs
 
-% Fall ratio is Var 3 of data table.
-data = reshape(table2array(full_data(:,3)), [pert_tot, length(Gammastr)]);
-
-% Set specifications for heatmap 
-spec = '%3.2f';
-thresh = 0.7;
-shift_gt10 = 0.16;
-shift_lt10 = 0.13;
-
-% % Percent yield is Var 4 of data table.
-% data = reshape(table2array(full_data(:,4)), [new_gam, length(Gammastr)]);
+% % Fall ratio is Var 3 of data table.
+% data = reshape(table2array(full_data(:,3)), [pert_tot, length(Gammastr)]);
 % 
-% % Set specifications for heatmap
-% spec = '%3.2f%%';
-% thresh = 10;
-% shift_gt10 = 0.23;
-% shift_lt10 = 0.16;
+% % Set specifications for heatmap 
+% spec = '%3.2f';
+% thresh = 0.7;
+% shift_gt10 = 0.16;
+% shift_lt10 = 0.13;
+
+% Percent yield is Var 4 of data table.
+data = reshape(table2array(full_data(:,4)), [pert_tot, length(Gammastr)]);
+
+% Set specifications for heatmap
+spec = '%3.2f%%';
+thresh = 10;
+shift_gt10 = 0.23;
+shift_lt10 = 0.16;
 
 data = flip(data);
 
