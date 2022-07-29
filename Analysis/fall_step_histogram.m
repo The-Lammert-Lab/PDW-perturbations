@@ -7,16 +7,20 @@
 %% Load data
 addpath('../Brewermap colors');
 
-fallsteps14 = load('../Data/Data n50000g0.014p0.5d03-Jun22/fall_steps_data.csv');
-fallsteps16 = load('../Data/Data n50000g0.016p0.5d04-Jun22/fall_steps_data.csv');
-fallsteps19 = load('../Data/Data n50000g0.019p0.5d05-Jun22/fall_steps_data.csv');
+% Load to struct so this is only section that needs to be changed for
+% more/less data
+S.fallsteps14 = load('../Data/Data n50000g0.014p0.5d03-Jun22/fall_steps_data.csv');
+S.fallsteps16 = load('../Data/Data n50000g0.016p0.5d04-Jun22/fall_steps_data.csv');
+S.fallsteps19 = load('../Data/Data n50000g0.019p0.5d05-Jun22/fall_steps_data.csv');
 
 % Data are all different lengths, so pad with NaNs.
-fallsteps = NaN(max([length(fallsteps14),length(fallsteps16),length(fallsteps19)]),3);
+fallsteps = NaN(max(structfun(@(x) max(length(x)),S)),length(fieldnames(S)));
 
-fallsteps(1:length(fallsteps14),1) = fallsteps14;
-fallsteps(1:length(fallsteps16),2) = fallsteps16;
-fallsteps(1:length(fallsteps19),3) = fallsteps19;
+count = 0;
+for ii = fieldnames(S)'
+    count = count + 1;
+    fallsteps(1:length(S.(ii{1})),count) = S.(ii{1});
+end
 
 %% Plot
 
