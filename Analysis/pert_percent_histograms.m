@@ -9,26 +9,42 @@ addpath('../Brewermap colors');
 
 %% Load Data
 
-P = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/perturbationPercent.csv');
-M = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
+% Path to folders with data
+foldernames = {'../Data/Data n50000g0.014p0.5d03-Jun22/', ...
+    '../Data/Data n50000g0.016p0.5d04-Jun22/', ...
+    '../Data/Data n50000g0.019p0.5d05-Jun22/'};
+
+num_datasets = length(foldernames);
+
+% Start storing data to create arrays
+P = load(strcat(foldernames{1},'perturbationPercent.csv'));
+M = load(strcat(foldernames{1},'metrics.csv'));
 yall = M(:,1);
 
-P(end+1:end+4,:) = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/perturbationPercent.csv');
-M = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
-yall(:,end+1) = M(:,1);
+% Remove folder of loaded data from array
+foldernames = foldernames(2:end);
 
-P(end+1:end+4,:) = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/perturbationPercent.csv');
-M = load('../Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
-yall(:,end+1) = M(:,1);
+% Preallocate rest of y's with NaNs
+yall(:,end+1:end+length(foldernames)) = NaN(length(yall),length(foldernames));
 
-%% Prepare 
-num_datasets = size(yall,2);
+% Add rest of data
+for i = 1:length(foldernames)
+    P(end+1:end+4,:) = load(strcat(foldernames{i},'perturbationPercent.csv'));
+    M = load(strcat(foldernames{i},'metrics.csv'));
+    yall(:,i+1) = M(:,1);
+end
 
+%% Prepare
+
+% Manually enter pert and gam information
 pert = 0.50;
 gam = [0.014, 0.016, 0.019];
-p_ind = (1:4:size(P,1));
-bin_edges = -pert*100:pert*100;
 
+% Plot assistance
+bin_edges = -pert*100:pert*100;
+p_ind = (1:4:size(P,1));
+
+% Color options
 map = brewermap(40,'Greys');
 light = 25;
 alpha = 0.75;
@@ -79,7 +95,7 @@ end
 
 % Place legend in the top right corner
 nexttile(num_datasets)
-legend('Non-falls','Falls','Location','northeast','Fontsize',20)
+legend('Non-falls','Falls','Location','northeast','Fontsize',14)
 
 % Axes labels
 xlabel(t, 'Perturbation magnitude (%)','fontsize',20)
