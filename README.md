@@ -3,9 +3,6 @@
 ## Purpose
 In this repository are all the files used to generate and analyze the data 
 presented in `Dynamic Stability of Passive Dynamic Walking Following Unexpected Perturbations`. 
-The files are in a much cleaner and more readable form 
-than they were when generating data for the manuscript. 
-None of the functionality was changed -- only file names, code cleanliness, and documentation. 
 
 ## Data Generation 
 The main files in this folder are `perturb_pdw.m` and `collect_data.m,` which 
@@ -26,6 +23,13 @@ titled, for example, `Gaitcycles data n20000g0.014_0.019p0.02_0.5`. The term
 "Gaitcycles" is a holdover from earlier versions of the work. 
 The gamma and perturbation ranges are shown after `g` and `p`, respectively.
 Details of the saved files are in the code documentation.
+
+### :warning: NOTE:
+Data generation takes a **LONG** time. This most likely can be improved, 
+but ultimately is a fundamental component of the model given the very low percent yields
+at high perturbation magnitudes. Before generating large amounts of data, 
+experiment with the speed on your machine and familiarize yourself with the approximate time
+smaller trial numbers take. 
 
 ## Analysis
 The main files in this folder are `pert_percent_histograms.m`,
