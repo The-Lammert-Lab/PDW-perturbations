@@ -16,6 +16,9 @@
 %       percent by which to perturb the ICs
 %       0 <= pert <= 1
 % 
+%   savetype: char,
+%       either 'csv' or 'mat'. Indicates the filetype to save metrics as.
+% 
 % OUTPUTS:
 % 
 %   y: n x 1 numerical vector, 
@@ -51,10 +54,15 @@
 %   yield: 1 x 1 scalar, 
 %       percent yield.
 % 
-% CSVs saved:
+% Files saved:
 % 
-%   'metrics.csv' = [y jac_eig stepT_metrics stepL_metrics IC];
-%     
+%   EITHER
+%       'metrics.csv' = [y jac_eig stepT_metrics stepL_metrics IC]
+%   OR 
+%       'metrics.mat' = struct with metrics data. ST and SL are substructs.
+% 
+%   'outcomes.csv' = y
+%        
 %   'IC_fall_data.csv' = IC_fall
 %     
 %   'fall_steps_data.csv' = fall_steps
@@ -68,12 +76,13 @@
 % Jac_eig_pdw
 % heatmap_loop
 
-function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, pert_perc, yield] = collect_data(n,gam,pert)
+function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, pert_perc, yield] = collect_data(n,gam,pert,savetype)
 
     arguments
         n (1,1) {mustBePositive, mustBeInteger}
         gam (1,1) double {mustBeGreaterThan(gam,0.001), mustBeLessThanOrEqual(gam, 0.019)}
         pert (1,1) double {mustBeGreaterThanOrEqual(pert,0), mustBeLessThanOrEqual(pert, 1)}
+        savetype char {mustBeMember(savetype,["mat","csv"])}
     end
 
     %% Initialization 
@@ -186,12 +195,33 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     % stepT_metrics = n-by-3 (columns 4-6)
     % stepL_metrics = n-by-3 (columns 7-9)
     % IC = n-by-1 (column 10-11)
+
+    if strcmp(savetype,'csv')
+        M = [y jac_eig stepT_metrics stepL_metrics IC];
+        filename = 'metrics.csv';
+        fullname = fullfile(foldername,filename);
+        writematrix(M, fullname);
+    else
+        M = struct('y',y,'eigenvalues',jac_eig,'ICpt',IC);
+        
+        % Add nested structs
+        M.ST.Var = stepT_var;
+        M.ST.Mean = stepT_mean;
+        M.ST.Asym = stepT_asym;
+        
+        M.SL.Var = stepL_var;
+        M.SL.Mean = stepL_mean;
+        M.SL.Asym = stepL_asym;
+        
+        filename = 'metrics.mat';
+        fullname = fullfile(foldername,filename);
+        save(fullname,'-struct','M');
+    end
     
-    M = [y jac_eig stepT_metrics stepL_metrics IC];
-    filename = 'metrics.csv';
+    filename = 'outcomes.csv';
     fullname = fullfile(foldername,filename);
-    writematrix(M, fullname);
-    
+    writematrix(y, fullname);
+
     filename = 'IC_fall_data.csv';
     fullname = fullfile(foldername,filename);
     writematrix(IC_fall, fullname);

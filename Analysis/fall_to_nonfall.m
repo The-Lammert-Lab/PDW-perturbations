@@ -3,17 +3,23 @@
 % Calculate fall to non-fall ratio from 1/0 data. 
 % Visualize in table. 
 
-M = load('../Data/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
-y = M(:,1);
+%% Load data
+% Path to folders with data (n must be the same)
+foldernames = {'../Data/Data n50000g0.014p0.5d03-Jun22/', ...
+    '../Data/Data n50000g0.016p0.5d04-Jun22/', ...
+    '../Data/Data n50000g0.019p0.5d05-Jun22/'};
 
-M = load('../Data/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
-y(:,end+1) = M(:,1);
+n = str2double(char(extractBetween(foldernames{1},'n','g')));
 
-M = load('../Data/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
-y(:,end+1) = M(:,1);
+y = NaN(n,length(foldernames));
 
+% Populate y
+for i = 1:length(foldernames)
+    y(:,i) = load(strcat(foldernames{i},'outcomes.csv'));
+end
+
+%% Calculate
 % 0 = non-fall, 1 = fall
-
 nonfalls = zeros(size(y,2),1);
 falls = zeros(size(y,2),1);
 
@@ -24,7 +30,10 @@ end
 
 ratio = falls ./ nonfalls;
 
-gam = {'fall:nonfall 0.014';'fall:nonfall 0.016';'fall:nonfall 0.019'};
+%% Table
+% Rownames
+fnf = repmat({'fall:nonfall '},[length(foldernames),1]);
+gam = strcat(fnf, char(extractBetween(foldernames,'g','p')));
 
 T = table(ratio,'RowNames',gam);
 

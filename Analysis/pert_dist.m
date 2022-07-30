@@ -8,18 +8,27 @@
 addpath('../Brewermap colors');
 
 %% Load data
+foldernames = {'../Data/Data n50000g0.014p0.5d03-Jun22/', ...
+    '../Data/Data n50000g0.016p0.5d04-Jun22/', ...
+    '../Data/Data n50000g0.019p0.5d05-Jun22/'};
 
-P_all = load('../Data/Data n50000g0.014p0.5d03-Jun22/perturbationPercent.csv');
-M = load('../Data/Data n50000g0.014p0.5d03-Jun22/metrics.csv');
-y = M(:,1);
+num_datasets = length(foldernames);
 
-P_all(end+1:end+4,:) = load('../Data/Data n50000g0.016p0.5d04-Jun22/perturbationPercent.csv');
-M = load('../Data/Data n50000g0.016p0.5d04-Jun22/metrics.csv');
-y(:,end+1) = M(:,1);
+% Start storing data to create arrays
+P = load(strcat(foldernames{1},'perturbationPercent.csv'));
+yall = load(strcat(foldernames{1},'outcomes.csv'));
 
-P_all(end+1:end+4,:) = load('../Data/Data n50000g0.019p0.5d05-Jun22/perturbationPercent.csv');
-M = load('../Data/Data n50000g0.019p0.5d05-Jun22/metrics.csv');
-y(:,end+1) = M(:,1);
+% Remove folder of loaded data from array
+foldernames = foldernames(2:end);
+
+% Preallocate rest of y with NaNs
+yall(:,end+1:end+length(foldernames)) = NaN(length(yall),length(foldernames));
+
+% Add rest of data
+for i = 1:length(foldernames)
+    P(end+1:end+4,:) = load(strcat(foldernames{i},'perturbationPercent.csv'));
+    yall(:,i+1) = load(strcat(foldernames{i},'outcomes.csv'));
+end
 
 %% Distance
 
