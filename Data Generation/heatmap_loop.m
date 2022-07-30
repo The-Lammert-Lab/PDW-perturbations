@@ -8,6 +8,10 @@
 %   n: 1 x 1 scalar, 
 %       the number of trials each collect_data call produces. 
 % 
+%   savetype: char,
+%       either 'csv' or 'mat'. 
+%       Indicates the filetype to save metrics in collect_data as.
+% 
 % Saved CSVs
 % 
 %   gaitCyclesProcessed  = [gamma perturbation fall_ratio percent_yield]  
@@ -17,10 +21,11 @@
 % See also:
 % collect_data
 
-function heatmap_loop(n)
+function heatmap_loop(n, savetype)
 
     arguments 
         n (1,1) {mustBePositive, mustBeInteger}
+        savetype char {mustBeMember(savetype,["mat","csv"])}
     end
 
     %% Initialization
@@ -39,7 +44,7 @@ function heatmap_loop(n)
         for jtor = 1:length(pert)
             
             c = c+1;
-            [y, ~, ~, stepT_metrics, stepL_metrics, ~, ~, ~, yield] = collect_data(n,gam(itor),pert(jtor));
+            [y, ~, ~, stepT_metrics, stepL_metrics, ~, ~, ~, yield] = collect_data(n,gam(itor),pert(jtor), savetype);
     
             % Simulation data
             falls(c) = sum(y==1);
@@ -96,7 +101,8 @@ function heatmap_loop(n)
     fullname = fullfile(foldername,filename);
     writematrix(processed, fullname);
     
-    % Useful to save the metrics. 
+    % Useful to save the metrics. Not used in analysis b/c data saved in
+    % output of collect_data.m, too. 
     filename = strcat('gaitCyclesMetrics',num2str(min(gam)),'_',num2str(max(gam)),...
        '_',num2str(min(pert)),'_',num2str(max(pert)),'.csv');
     fullname = fullfile(foldername,filename);
