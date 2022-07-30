@@ -8,9 +8,9 @@
 % See also:
 % linear_classify
 
-filenames = {'../Data/Data NEWFALL (reviewer edits)/Data n50000g0.014p0.5d03-Jun22/metrics.csv',...
-    '../Data/Data NEWFALL (reviewer edits)/Data n50000g0.016p0.5d04-Jun22/metrics.csv',...
-    '../Data/Data NEWFALL (reviewer edits)/Data n50000g0.019p0.5d05-Jun22/metrics.csv'};
+filenames = {'../Data/Data n50000g0.014p0.5d03-Jun22/metrics.csv',...
+    '../Data/Data n50000g0.016p0.5d04-Jun22/metrics.csv',...
+    '../Data/Data n50000g0.019p0.5d05-Jun22/metrics.csv'};
 
 gam = {'g14', 'g16', 'g19'};
 
@@ -70,6 +70,8 @@ for i = 1:length(filenames)
         end
     end
     
+    T = sortrows(T,'RowNames');
+
     % Store data
     allResults.(gam{i}) = T;
 

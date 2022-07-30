@@ -7,26 +7,23 @@
 %% Load data
 addpath('../Brewermap colors');
 
-% Load to struct so this is only section that needs to be changed for
-% more/less data
-S.fallsteps14 = load('../Data/Data n50000g0.014p0.5d03-Jun22/fall_steps_data.csv');
-S.fallsteps16 = load('../Data/Data n50000g0.016p0.5d04-Jun22/fall_steps_data.csv');
-S.fallsteps19 = load('../Data/Data n50000g0.019p0.5d05-Jun22/fall_steps_data.csv');
+% Folders with data of interest.
+foldernames = {'../Data/Data n50000g0.014p0.5d03-Jun22/', ...
+    '../Data/Data n50000g0.016p0.5d04-Jun22/', ...
+    '../Data/Data n50000g0.019p0.5d05-Jun22/'};
 
-% Data are all different lengths, so pad with NaNs.
-fallsteps = NaN(max(structfun(@(x) max(length(x)),S)),length(fieldnames(S)));
+% Order needs to match order of foldernames.
+gam = [0.014, 0.016, 0.019];
 
-count = 0;
-for ii = fieldnames(S)'
-    count = count + 1;
-    fallsteps(1:length(S.(ii{1})),count) = S.(ii{1});
+% Load to struct with fields 'g14', 'g16', etc.
+datafields = cell(1,length(foldernames));
+for i = 1:length(foldernames)
+    gamnum = extractBetween(foldernames{i},'g0.0','p');
+    datafields{i} = strcat('g',gamnum{1});
+    S.(datafields{i}) = load(strcat(foldernames{i},'fall_steps_data.csv'));
 end
 
 %% Plot
-
-% Setup
-gam = [0.014, 0.016, 0.019];
-
 map = brewermap(50,'Greys');
 
 percent_firstandsecond = zeros(1,3);
@@ -34,10 +31,10 @@ percent_first = zeros(1,3);
 
 figure
 t = tiledlayout(3,1);
-for i = 1:size(fallsteps,2)
+for i = 1:length(fieldnames(S))
     
-    data = fallsteps(~isnan(fallsteps(:,i)),i);
-    
+    data = S.(datafields{i});
+
     % Get percent occurrence for first and second steps
     first_and_second_steps = sum(data == 1 | data == 2);
     first_steps = sum(data == 1);

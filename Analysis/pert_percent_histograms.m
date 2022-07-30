@@ -9,7 +9,7 @@ addpath('../Brewermap colors');
 
 %% Load Data
 
-% Path to folders with data
+% Path to folders with data (n must be the same)
 foldernames = {'../Data/Data n50000g0.014p0.5d03-Jun22/', ...
     '../Data/Data n50000g0.016p0.5d04-Jun22/', ...
     '../Data/Data n50000g0.019p0.5d05-Jun22/'};
@@ -18,20 +18,18 @@ num_datasets = length(foldernames);
 
 % Start storing data to create arrays
 P = load(strcat(foldernames{1},'perturbationPercent.csv'));
-M = load(strcat(foldernames{1},'metrics.csv'));
-yall = M(:,1);
+yall = load(strcat(foldernames{1},'outcomes.csv'));
 
 % Remove folder of loaded data from array
 foldernames = foldernames(2:end);
 
-% Preallocate rest of y's with NaNs
+% Preallocate rest of y with NaNs
 yall(:,end+1:end+length(foldernames)) = NaN(length(yall),length(foldernames));
 
 % Add rest of data
 for i = 1:length(foldernames)
     P(end+1:end+4,:) = load(strcat(foldernames{i},'perturbationPercent.csv'));
-    M = load(strcat(foldernames{i},'metrics.csv'));
-    yall(:,i+1) = M(:,1);
+    yall(:,i+1) = load(strcat(foldernames{i},'outcomes.csv'));
 end
 
 %% Prepare
