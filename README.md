@@ -14,7 +14,7 @@ PDW-perturbations/Data directory, within a folder named, for example,
 `Data_n50000g0.014p0.5d03-Jun22`. Where the number after `n` is the number
 of fall or nonfall trials completed (not counting early falls), the number 
 after `g` is the gamma value in radians, the number after `p` is 
-the perturbation size (referred to as `delta` in the manuscript), and the
+the perturbation size (referred to as $\delta$ in the manuscript), and the
 values after `d` are the day number the data was saved followed by the month and year.
 Details of the saved files are in the code documentation.
 
