@@ -11,7 +11,7 @@ is also a useful data generating function.
 
 `collect_data.m` saves data into the 
 PDW-perturbations/Data directory, within a folder named, for example,
-`Data n50000g0.014p0.5d03-Jun22`. Where the number after `n` is the number
+`Data_n50000g0.014p0.5d03-Jun22`. Where the number after `n` is the number
 of fall or nonfall trials completed (not counting early falls), the number 
 after `g` is the gamma value in radians, the number after `p` is 
 the perturbation size (referred to as `delta` in the manuscript), and the
@@ -19,8 +19,7 @@ values after `d` are the day number the data was saved followed by the month and
 Details of the saved files are in the code documentation.
 
 `heatmap_loop.m` saves two data sets into a folder in PDW-perturbations/Data
-titled, for example, `Gaitcycles data n20000g0.014_0.019p0.02_0.5`. The term
-"Gaitcycles" is a holdover from earlier versions of the work. 
+titled, for example, `HeatmapData_n20000g0.014_0.019p0.02_0.5`.
 The gamma and perturbation ranges are shown after `g` and `p`, respectively.
 Details of the saved files are in the code documentation.
 
