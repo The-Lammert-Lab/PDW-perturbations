@@ -179,7 +179,7 @@ function [y, IC, IC_fall, stepT_metrics, stepL_metrics, fall_steps, jac_eig, per
     d = date;
     d = d([1:6,10:11]);
     temp = 0;
-    foldername = strcat('../Data/Data n',num2str(n),'g',num2str(gam),'p',num2str(pert),'d',num2str(d));
+    foldername = strcat('../Data/Data_n',num2str(n),'g',num2str(gam),'p',num2str(pert),'d',num2str(d));
     
     % So it doesn't error if there's accidentally a folder with same name
     while exist(foldername,'dir') == 7

@@ -82,7 +82,7 @@ function heatmap_loop(n, savetype)
     d = date;
     d = d([1:6,10:11]);
     temp = 0;
-    foldername = strcat('../Data/Gaitcycles data n',num2str(n),...
+    foldername = strcat('../Data/HeatmapData_n',num2str(n),...
         'g',num2str(min(gam)),'_',num2str(max(gam)),...
         'p',num2str(min(pert)),'_',num2str(max(pert)),'d',num2str(d));
     
@@ -96,14 +96,14 @@ function heatmap_loop(n, savetype)
     
     % Used for heatmap figures
     processed = [gamma perturbation fall_ratio percent_yield];
-    filename = strcat('gaitCyclesProcessed',num2str(min(gam)),'_',num2str(max(gam)),...
+    filename = strcat('HeatmapProcessed_',num2str(min(gam)),'_',num2str(max(gam)),...
        '_',num2str(min(pert)),'_',num2str(max(pert)),'.csv');
     fullname = fullfile(foldername,filename);
     writematrix(processed, fullname);
     
-    % Useful to save the metrics. Not used in analysis b/c data saved in
-    % output of collect_data.m, too. 
-    filename = strcat('gaitCyclesMetrics',num2str(min(gam)),'_',num2str(max(gam)),...
+    % Might as well save the metrics. 
+    % Not used in analysis b/c data saved in output of collect_data.m, too. 
+    filename = strcat('HeatmapMetrics_',num2str(min(gam)),'_',num2str(max(gam)),...
        '_',num2str(min(pert)),'_',num2str(max(pert)),'.csv');
     fullname = fullfile(foldername,filename);
     writematrix(mat,fullname);

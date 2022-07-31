@@ -11,8 +11,8 @@
 
 %% Load data
 
-filename = ['../Data/Gaitcycles data n20000g0.016_0.019p0.02_0.5d01-Jun22/' ...
-    'gaitCyclesProcessed0.014_0.019_0.02_0.5.csv'];
+filename = ['../Data/HeatmapData_n20000g0.016_0.019p0.02_0.5d01-Jun22/' ...
+    'HeatmapProcessed_0.014_0.019_0.02_0.5.csv'];
 
 full_data = readtable(filename);
 
