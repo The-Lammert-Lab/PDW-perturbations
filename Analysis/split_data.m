@@ -26,6 +26,8 @@ function [test, train] = split_data(filename)
     end
 
     %% Load data
+    TRIM = false;
+
     [~,~,ext] = fileparts(filename);
     if strcmp(ext,'.csv')
         M = readtable(filename);
@@ -56,10 +58,10 @@ function [test, train] = split_data(filename)
         full_data.SL.Asym = M.Var9;
 
     elseif strcmp(ext,'.mat')
-        TRIM = false;
         full_data = load(filename);
 
         % Check one non-struct field manually for even length.
+        % Due to ST and SL substructs, can't trim here.
         if mod(length(full_data.y),2) ~= 0
             TRIM = true;
         end
