@@ -19,7 +19,7 @@ values after `d` are the day number the data was saved followed by the month and
 Details of the saved files are in the code documentation.
 
 `heatmap_loop.m` saves two data sets into a folder in PDW-perturbations/Data
-titled, for example, `HeatmapData_n20000g0.014_0.019p0.02_0.5`.
+titled, for example, `HeatmapData_n20000g0.014_0.019p0.02_0.5d01-Jun22`.
 The gamma and perturbation ranges are shown after `g` and `p`, respectively.
 Details of the saved files are in the code documentation.
 
