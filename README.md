@@ -43,5 +43,5 @@ what data each script is able to process.
 This folder is copied from the GitHub repository [DrosteEffect/BrewerMap](https://github.com/DrosteEffect/BrewerMap) to assist in creating quality figures.
 
 ## Contribution note
-Since the purpose of this paper is to house the code described in the paper, no substantial modifications are needed. 
+Since the purpose of this repository is to house the code described in the paper, no substantial modifications are needed. 
 Performance and UI improvements are welcome to be submitted through a PR. 
