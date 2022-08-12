@@ -23,7 +23,7 @@ titled, for example, `HeatmapData_n20000g0.014_0.019p0.02_0.5d01-Jun22`.
 The gamma and perturbation ranges are shown after `g` and `p`, respectively.
 Details of the saved files are in the code documentation.
 
-### :warning: NOTE:
+### :warning: NOTE :warning:
 Data generation takes a **LONG** time. This most likely can be improved, 
 but ultimately is a fundamental component of the model given the very low percent yields
 at high perturbation magnitudes. Before generating large amounts of data, 
@@ -48,6 +48,7 @@ Performance and UI improvements are welcome to be submitted through a PR.
 
 ## :warning: LICENSE AND COPYRIGHT :warning:
 This work is licensed under the GPL General Public License -- a copyleft license. 
+
 The foundataion of the simulation code is derived from the [horchler/Passive-Dynamic-Walking](https://github.com/horchler/Passive-Dynamic-Walking) repository, which carries its own copyright.
 The following files are associated with `COPYRIGHT_HORCHLER.txt`:
 
