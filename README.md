@@ -44,4 +44,15 @@ This folder is copied from the GitHub repository [DrosteEffect/BrewerMap](https:
 
 ## Contribution note
 Since the purpose of this paper is to house the code described in the paper, no substantial modifications are needed. 
-Performance and UI improvements are welcome to be submitted through a PR. 
+Performance and UI improvements are welcome to be submitted through a PR.
+
+## :warning: LICENSE AND COPYRIGHT :warning:
+This work is licensed under the GPL General Public License -- a copyleft license. 
+The foundataion of the simulation code is derived from the [horchler/Passive-Dynamic-Walking](https://github.com/horchler/Passive-Dynamic-Walking) repository, which carries its own copyright.
+The following files are associated with `COPYRIGHT_HORCHLER.txt`:
+
+| File | Modifications |
+| ---- | ------------- |
+| perturb_pdw.m | Major modifications |
+| simpwm_noviz.m | Added outputs, y0 input, and suppressed visualization |
+| wmview.m | Unedited |
