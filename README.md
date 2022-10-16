@@ -49,7 +49,7 @@ Performance and UI improvements are welcome to be submitted through a PR.
 ## LICENSE AND COPYRIGHT
 This work is licensed under the GPL General Public License -- a copyleft license. 
 
-The foundataion of the simulation code is derived from the [horchler/Passive-Dynamic-Walking](https://github.com/horchler/Passive-Dynamic-Walking) repository, which carries its own copyright.
+The foundation of the simulation code is derived from the [horchler/Passive-Dynamic-Walking](https://github.com/horchler/Passive-Dynamic-Walking) repository, which carries its own copyright.
 The following files are associated with `COPYRIGHT_HORCHLER.txt`:
 
 | File | Modifications |
