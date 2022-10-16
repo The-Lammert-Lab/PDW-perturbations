@@ -19,7 +19,7 @@ for i = 1:length(filenames)
 
     % Convert struct to table
     tab = structfun(@(x) struct2table(x),results,'UniformOutput',false);
-    metrics = fieldnames(tab)';
+    metrics = fieldnames(tab);
 
     % Reset rownames variable each loop
     clear rownames
@@ -27,11 +27,11 @@ for i = 1:length(filenames)
     % Initial table for subsequent joins 
     % Loop to avoid issues with a nested struct
     count = 0;
-    for ii = metrics
+    for ii = 1:length(metrics)
         count = count + 1;
-        subnames = fieldnames(results.(ii{1}));
-        if ~isstruct(tab.(ii{1}).(subnames{1}))
-            T = tab.(ii{1});
+        subnames = fieldnames(results.(metrics{ii}));
+        if ~isstruct(tab.(metrics{ii}).(subnames{1}))
+            T = tab.(metrics{ii});
             T.Properties.RowNames = metrics(count);
             % Remove this one from the subsequent joins
             metrics = metrics(1:end ~= count);
@@ -40,13 +40,13 @@ for i = 1:length(filenames)
     end
     
     % Join tables and update row names
-    for ii = metrics
-        subnames = tab.(ii{1}).Properties.VariableNames;
+    for ii = 1:length(metrics)
+        subnames = tab.(metrics{ii}).Properties.VariableNames;
         % ST and SL are nested structs
-        if isstruct(tab.(ii{1}).(subnames{1}))
-            for jj = subnames
+        if isstruct(tab.(metrics{ii}).(subnames{1}))
+            for jj = 1:length(subnames)
                 % Nested struct not converted initially
-                T_new = struct2table(tab.(ii{1}).(jj{1}));
+                T_new = struct2table(tab.(metrics{ii}).(subnames{jj}));
 
                 % Save table organization and join
                 currnames = T.Properties.RowNames; 
@@ -54,18 +54,18 @@ for i = 1:length(filenames)
 
                 % Match metric names properly
                 rownames(ileft > 0) = currnames;
-                rownames(iright > 0) = {strcat(ii{1}, '_', jj{1})};
+                rownames(iright > 0) = {strcat(metrics{ii}, '_', subnames{jj})};
                 T.Properties.RowNames = rownames;
             end
     
         else
             % Save table organization and join
             currnames = T.Properties.RowNames;
-            [T,ileft,iright] = outerjoin(T,tab.(ii{1}),'MergeKeys',true);
+            [T,ileft,iright] = outerjoin(T,tab.(metrics{ii}),'MergeKeys',true);
 
             % Match metric names properly
             rownames(ileft > 0) = currnames;
-            rownames(iright > 0) = ii;
+            rownames(iright > 0) = metrics(ii);
             T.Properties.RowNames = rownames;
         end
     end
