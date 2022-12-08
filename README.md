@@ -2,7 +2,10 @@
 
 ## Purpose
 In this repository are all the files used to generate and analyze the data 
-presented in `Dynamic Stability of Passive Dynamic Walking Following Unexpected Perturbations`. 
+presented in:
+
+Barnett, N. V., and Lammert, A. C. (December 5, 2022). "Dynamic Stability of Passive Dynamic Walking Following Unexpected Perturbations." ASME. J Biomech Eng. April 2023; 145(4): 044501. 
+https://doi.org/10.1115/1.4056166.
 
 ## Data Generation 
 The main files in this folder are `perturb_pdw.m` and `collect_data.m,` which 
